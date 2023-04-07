@@ -1,3 +1,6 @@
-from django.shortcuts import render
+from rest_framework.views import APIView, Request, Response, status
 
-# Create your views here.
+
+class UserView(APIView):
+    def get(self, request: Request) -> Response:
+        return Response({'msg': 'hue'})
