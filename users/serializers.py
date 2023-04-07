@@ -6,8 +6,7 @@ class UserSerializer(serializers.Serializer):
     first_name = serializers.CharField(max_length=10)
     last_name = serializers.CharField(max_length=10)
     email = serializers.EmailField()
-    favorite_season = serializers.CharField(
-        max_length=30,
+    favorite_season = serializers.ChoiceField(
         choices=Seasons.choices,
         default=Seasons.DEFAULT
     )
