@@ -9,4 +9,4 @@ class User(models.Model):
     email = models.EmailField()
 
     def __repr__(self) -> str:
-        return f'<User ({self.id} - {self.email})>'
+        return f'<User ({self.id}) - {self.email}>'
