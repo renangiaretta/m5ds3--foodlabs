@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Seasons
+from recipes.serializers import RecipeSerializer
 
 
 class UserSerializer(serializers.Serializer):
@@ -14,3 +15,5 @@ class UserSerializer(serializers.Serializer):
 
     created_at = serializers.DateTimeField(read_only=True)
     updated_at = serializers.DateTimeField(read_only=True)
+
+    recipes = RecipeSerializer(many=True, read_only=True)

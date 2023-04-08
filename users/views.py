@@ -1,6 +1,7 @@
 from rest_framework.views import APIView, Request, Response, status
 from .models import User
 from .serializers import UserSerializer
+from django.shortcuts import get_object_or_404
 
 
 class UserView(APIView):
@@ -18,3 +19,18 @@ class UserView(APIView):
         serializer = UserSerializer(user)
 
         return Response(serializer.data, status.HTTP_201_CREATED)
+
+
+class UserDetailView(APIView):
+    def get(self, request: Request, user_id: int) -> Response:
+        user = get_object_or_404(User, id=user_id)
+        serializer = UserSerializer(user)
+        return Response(serializer.data, status.HTTP_200_OK)
+
+    def patch(self, request: Request, user_id: int) -> Response:
+        user = get_object_or_404(User, id=user_id)
+        return Response({'message': 'UPDATEUZRBYID'})
+
+    def delete(self, request: Request, user_id: int) -> Response:
+        user = get_object_or_404(User, id=user_id)
+        return Response({'message': 'DELETEUZRBYID'})
