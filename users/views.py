@@ -1,14 +1,14 @@
 from rest_framework.views import APIView, Request, Response, status
 from .models import User
-from .serializers import UserSerializer
+from .serializers import UserSerializer, ReadUserSerializer
 from django.shortcuts import get_object_or_404
 from addresses.models import Address
-
+ 
 
 class UserView(APIView):
     def get(self, request: Request) -> Response:
         users = User.objects.all()
-        serializer = UserSerializer(instance=users, many=True)
+        serializer = ReadUserSerializer(instance=users, many=True)
         return Response(serializer.data, status.HTTP_200_OK)
 
     def post(self, request: Request) -> Response:
@@ -27,12 +27,30 @@ class UserView(APIView):
 class UserDetailView(APIView):
     def get(self, request: Request, user_id: int) -> Response:
         user = get_object_or_404(User, id=user_id)
-        serializer = UserSerializer(user)
+        serializer = ReadUserSerializer(user)
         return Response(serializer.data, status.HTTP_200_OK)
 
     def patch(self, request: Request, user_id: int) -> Response:
         user = get_object_or_404(User, id=user_id)
-        return Response({'message': 'UPDATEUZRBYID'})
+        serializer = UserSerializer(data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+
+        address_data: dict = serializer.validated_data.pop('address', None)
+
+        if address_data:
+            try:
+                for key, value in address_data.items():
+                    setattr(user.address, key, value)
+                user.address.save()
+            except User.address.RelatedObjectDoesNotExist:
+                Address.objects.create(**address_data, user=user)
+
+        for key, value in serializer.validated_data.items():
+            setattr(user, key, value)
+
+        user.save()
+        serializer = UserSerializer(user)
+        return Response(serializer.data, status.HTTP_200_OK)
 
     def delete(self, request: Request, user_id: int) -> Response:
         user = get_object_or_404(User, id=user_id)

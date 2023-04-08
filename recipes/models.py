@@ -11,6 +11,7 @@ class Recipe(models.Model):
         'users.User',
         on_delete=models.CASCADE,
         related_name='recipes',
+        null=True
         )
 
     def __repr__(self) -> str:
