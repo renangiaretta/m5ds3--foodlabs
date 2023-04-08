@@ -3,7 +3,7 @@ from .models import User
 from .serializers import UserSerializer, ReadUserSerializer
 from django.shortcuts import get_object_or_404
 from addresses.models import Address
- 
+
 
 class UserView(APIView):
     def get(self, request: Request) -> Response:

@@ -14,5 +14,8 @@ class Recipe(models.Model):
         null=True
         )
 
+    def total_ingredients(self):
+        return self.ingredients.count()
+
     def __repr__(self) -> str:
         return f'Recipe ({self.id}) - {self.name}'

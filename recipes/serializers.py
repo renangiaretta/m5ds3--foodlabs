@@ -6,5 +6,8 @@ class RecipeSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
     name = serializers.CharField(max_length=50)
     description = serializers.CharField(default=None)
-
+    ingredients_quantity = serializers.IntegerField(
+        read_only=True,
+        source='total_ingredients',
+    )
     ingredients = IngredientSerializer(many=True)
