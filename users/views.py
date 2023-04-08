@@ -36,4 +36,5 @@ class UserDetailView(APIView):
 
     def delete(self, request: Request, user_id: int) -> Response:
         user = get_object_or_404(User, id=user_id)
-        return Response({'message': 'DELETEUZRBYID'})
+        user.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
