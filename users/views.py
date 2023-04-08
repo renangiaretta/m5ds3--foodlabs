@@ -2,6 +2,7 @@ from rest_framework.views import APIView, Request, Response, status
 from .models import User
 from .serializers import UserSerializer
 from django.shortcuts import get_object_or_404
+from addresses.models import Address
 
 
 class UserView(APIView):
@@ -15,8 +16,10 @@ class UserView(APIView):
         if not serializer.is_valid():
             return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
 
-        user = User.objects.create(**serializer.validated_data)
-        serializer = UserSerializer(user)
+        address_data = serializer.validated_data.pop('address')
+        user_obj = User.objects.create(**serializer.validated_data)
+        Address.objects.create(**address_data, user=user_obj)
+        serializer = UserSerializer(user_obj)
 
         return Response(serializer.data, status.HTTP_201_CREATED)
 
