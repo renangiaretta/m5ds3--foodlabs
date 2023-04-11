@@ -5,7 +5,7 @@ from django.db import models
 
 class Seasons(models.TextChoices):
     SPRING = 'Primavera'
-    SUMMER = 'Verão' 
+    SUMMER = 'Verão'
     AUTUMN = 'Outono'
     WINTER = 'Winter'
     DEFAULT = 'Não informado'
